@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 1400" role="img" aria-labelledby="t d">
+<title id="t">아이슬 ICEL 이중컵 구조 개념도</title>
+<desc id="d">외부컵과 내부컵 사이에 얼음이 위치하고 내부컵에 내용물이 담기는 공개용 구조 개념도</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8fcff"/><stop offset="1" stop-color="#eaf5fb"/></linearGradient>
+  <linearGradient id="outer" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dff6ff" stop-opacity=".72"/><stop offset=".48" stop-color="#f8fdff" stop-opacity=".36"/><stop offset="1" stop-color="#9cdcf3" stop-opacity=".55"/></linearGradient>
+  <linearGradient id="inner" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff7ee" stop-opacity=".88"/><stop offset="1" stop-color="#ffd7ad" stop-opacity=".54"/></linearGradient>
+  <linearGradient id="drink" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffd7a6" stop-opacity=".72"/><stop offset="1" stop-color="#f3a25c" stop-opacity=".48"/></linearGradient>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#6f99ae" flood-opacity=".22"/></filter>
+  <filter id="soft"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<rect width="1120" height="1400" rx="38" fill="url(#bg)"/>
+<ellipse cx="560" cy="1240" rx="260" ry="42" fill="#8db4c7" opacity=".16" filter="url(#soft)"/>
+
+<!-- outer cup -->
+<g filter="url(#shadow)">
+  <path d="M280 238 Q560 158 840 238 L780 1118 Q560 1198 340 1118 Z" fill="url(#outer)" stroke="#62b8df" stroke-width="8"/>
+  <ellipse cx="560" cy="238" rx="280" ry="88" fill="#f9fdff" fill-opacity=".68" stroke="#4c98c6" stroke-width="10"/>
+  <ellipse cx="560" cy="244" rx="252" ry="66" fill="#fff" fill-opacity=".64" stroke="#a7d8ed" stroke-width="4"/>
+  <ellipse cx="560" cy="1117" rx="220" ry="55" fill="#eefaff" fill-opacity=".48" stroke="#7fc5e2" stroke-width="5"/>
+</g>
+
+<!-- ice zone -->
+<g fill="#dff7ff" stroke="#92d9f3" stroke-width="3" opacity=".96">
+  <rect x="340" y="390" width="58" height="66" rx="15" transform="rotate(-10 369 423)"/>
+  <rect x="356" y="478" width="66" height="56" rx="15" transform="rotate(12 389 506)"/>
+  <rect x="340" y="558" width="60" height="68" rx="15" transform="rotate(-8 370 592)"/>
+  <rect x="362" y="650" width="64" height="58" rx="15" transform="rotate(15 394 679)"/>
+  <rect x="345" y="744" width="60" height="62" rx="15" transform="rotate(-12 375 775)"/>
+  <rect x="365" y="840" width="62" height="58" rx="15" transform="rotate(11 396 869)"/>
+  <rect x="722" y="390" width="58" height="66" rx="15" transform="rotate(10 751 423)"/>
+  <rect x="698" y="478" width="66" height="56" rx="15" transform="rotate(-12 731 506)"/>
+  <rect x="720" y="558" width="60" height="68" rx="15" transform="rotate(8 750 592)"/>
+  <rect x="694" y="650" width="64" height="58" rx="15" transform="rotate(-15 726 679)"/>
+  <rect x="714" y="744" width="60" height="62" rx="15" transform="rotate(12 744 775)"/>
+  <rect x="693" y="840" width="62" height="58" rx="15" transform="rotate(-11 724 869)"/>
+</g>
+
+<!-- inner cup -->
+<path d="M376 292 Q560 246 744 292 L704 983 Q560 1042 416 983 Z" fill="url(#inner)" stroke="#f0a55a" stroke-width="7"/>
+<ellipse cx="560" cy="294" rx="184" ry="56" fill="#fff9f2" fill-opacity=".72" stroke="#f1b36e" stroke-width="5"/>
+<path d="M425 555 Q560 525 695 555 L674 938 Q560 978 446 938 Z" fill="url(#drink)" opacity=".78"/>
+<ellipse cx="560" cy="555" rx="135" ry="39" fill="#ffd3a2" fill-opacity=".62" stroke="#ef9a43" stroke-width="4"/>
+
+<!-- callouts -->
+<g font-family="Arial,'Noto Sans KR',sans-serif" font-weight="800">
+  <path d="M188 442 H265 L324 475" fill="none" stroke="#1674b5" stroke-width="5"/>
+  <circle cx="324" cy="475" r="11" fill="#1674b5"/>
+  <rect x="40" y="390" width="175" height="88" rx="38" fill="#d8efff"/>
+  <text x="127" y="447" text-anchor="middle" font-size="42" fill="#0b4d7f">외부컵</text>
+
+  <path d="M198 775 H282 L353 820" fill="none" stroke="#1674b5" stroke-width="5"/>
+  <circle cx="353" cy="820" r="11" fill="#1674b5"/>
+  <rect x="50" y="724" width="160" height="88" rx="38" fill="#d8efff"/>
+  <text x="130" y="781" text-anchor="middle" font-size="42" fill="#0b4d7f">얼음</text>
+
+  <path d="M930 438 H850 L744 470" fill="none" stroke="#db6d14" stroke-width="5"/>
+  <circle cx="744" cy="470" r="11" fill="#db6d14"/>
+  <rect x="906" y="385" width="178" height="88" rx="38" fill="#ffe7cb"/>
+  <text x="995" y="442" text-anchor="middle" font-size="42" fill="#4d2f1e">내부컵</text>
+
+  <path d="M922 690 H804 L675 732" fill="none" stroke="#db6d14" stroke-width="5"/>
+  <circle cx="675" cy="732" r="11" fill="#db6d14"/>
+  <rect x="892" y="637" width="192" height="88" rx="38" fill="#ffe7cb"/>
+  <text x="988" y="694" text-anchor="middle" font-size="42" fill="#4d2f1e">내용물</text>
+</g>
+
+<text x="560" y="1310" text-anchor="middle" font-family="Arial,'Noto Sans KR',sans-serif" font-size="22" fill="#6d8795">ICEL 공개용 구조 개념도 · 세부 권리 구조 및 제조 방식은 별도 협의</text>
+</svg>
