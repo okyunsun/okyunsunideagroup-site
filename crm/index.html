@@ -55,7 +55,14 @@
 <div class="item"><div class="grade">WATCH</div><div><div class="company">단순 관심 / 내부 검토</div><div class="desc">새 정보나 명확한 후속 이유가 생길 때만 Follow-up</div></div><div class="due">B 관리</div></div>
 </section>
 <div class="notice">MVP 화면 시안 · 현재 숫자와 거래처 내용은 UI 검토용 초기 데이터입니다. 실제 Gmail/거래처 DB 연동 전에는 운영 데이터로 사용하지 않습니다.</div>
-<section id="workflow" class="card" style="margin-top:16px"><div class="section-title"><h2>회신 처리 Workflow</h2><span class="link">MANUAL GRADE FIRST</span></div>
+<section class="card" id="grade-rules" style="margin-top:16px"><div class="section-title"><h2>등급 판정 기준</h2><span class="link">S+ / S / A / B</span></div>
+<div class="pipeline" style="grid-template-columns:repeat(4,1fr)">
+<div class="stage"><b>⭐ S+</b><small>가격·MOQ·샘플·공급조건·OEM/ODM·라이선싱·계약·Pilot·발주 등 구체 거래 진행</small></div>
+<div class="stage"><b>🔴 S</b><small>구체 미팅·파일럿·공동개발·상업화 검토 단계</small></div>
+<div class="stage"><b>🟡 A</b><small>명확한 관심 + 자료·조건·샘플·가격/MOQ 등 구체 정보 요청</small></div>
+<div class="stage"><b>🟢 B</b><small>긍정·관심은 있으나 다음 단계·예산·실행조건이 아직 불확정</small></div>
+</div>
+<div class="notice">투자 관심만으로 S+가 되지 않으며, 자동접수·단순 발송·회신 없음은 거래등급 승격 근거로 사용하지 않습니다. 수동 지정 등급이 항상 우선합니다.</div></section><section id="workflow" class="card" style="margin-top:16px"><div class="section-title"><h2>회신 처리 Workflow</h2><span class="link">MANUAL GRADE FIRST</span></div>
 <div class="pipeline" style="grid-template-columns:repeat(5,1fr)">
 <div class="stage"><b>① 회신 확인</b><div class="count">01</div><small>Gmail 신규 회신 수집</small></div>
 <div class="stage"><b>② 1차 대응</b><div class="count">02</div><small>감사 · 수신확인 · NEED 확인</small></div>
