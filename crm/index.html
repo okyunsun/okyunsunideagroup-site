@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>OYS Partner CRM</title>
+<style>
+:root{--bg:#f6f7f9;--ink:#151515;--muted:#73777f;--line:#e6e8ec;--orange:#f36b21;--nav:#111318}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Pretendard,"Noto Sans KR",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.shell{display:grid;grid-template-columns:238px 1fr;min-height:100vh}.side{background:var(--nav);color:#fff;padding:26px 18px;position:sticky;top:0;height:100vh}
+.brand{font-weight:800;font-size:19px;letter-spacing:-.4px;padding:0 10px 28px}.brand b{color:var(--orange)}.nav a{display:block;color:#aeb3bd;text-decoration:none;padding:11px 12px;border-radius:9px;margin:3px 0;font-size:14px}.nav a.active,.nav a:hover{background:#24272e;color:#fff}.nav .sep{height:1px;background:#2b2e35;margin:16px 8px}
+.main{padding:30px 34px 50px;max-width:1500px;width:100%}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.top h1{margin:0;font-size:27px}.sub{color:var(--muted);font-size:13px;margin-top:5px}.pill{font-size:12px;padding:7px 10px;border:1px solid var(--line);background:white;border-radius:999px}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px}.stat .n{font-size:28px;font-weight:800;margin-top:8px}.label{font-size:12px;color:var(--muted)}.splus{border-top:3px solid #ffb000}.s{border-top:3px solid #e5484d}.a{border-top:3px solid #f2c94c}.b{border-top:3px solid #39a96b}
+.grid{display:grid;grid-template-columns:1.35fr .9fr;gap:16px;margin-top:16px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.section-title h2{font-size:16px;margin:0}.link{font-size:12px;color:var(--orange)}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:13px 0;border-top:1px solid var(--line)}.item:first-of-type{border-top:0}.grade{font-weight:800;font-size:12px;min-width:44px}.company{font-weight:700;font-size:14px}.desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}.due{font-size:11px;color:#b33;white-space:nowrap}
+.todo{padding:12px 0;border-top:1px solid var(--line)}.todo:first-of-type{border-top:0}.todo strong{font-size:13px}.steps{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.8}.steps .done{color:#25824b}.next{font-size:12px;margin-top:6px}.pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-top:16px}.stage{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px;min-height:100px}.stage b{font-size:12px}.stage .count{font-size:23px;font-weight:800;margin-top:12px}.stage small{display:block;color:var(--muted);margin-top:4px}
+.notice{margin-top:16px;background:#fff8f2;border:1px solid #ffd8bf;border-radius:12px;padding:12px 14px;font-size:12px;color:#7a3d16}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(3,1fr)}}@media(max-width:720px){.shell{display:block}.side{height:auto;position:relative;padding:15px}.brand{padding:4px 5px 12px}.nav{display:flex;overflow:auto;gap:4px}.nav a{white-space:nowrap}.nav .sep{display:none}.main{padding:20px 14px}.stats{grid-template-columns:repeat(2,1fr)}.pipeline{grid-template-columns:repeat(2,1fr)}}
+</style></head>
+<body><div class="shell">
+<aside class="side"><div class="brand"><b>OYS</b> Partner CRM</div><nav class="nav">
+<a class="active">Dashboard</a><a>Inbox</a><a>Partners</a><a>Pipeline</a><a>Deals</a><a>Projects</a><a>Tasks</a><div class="sep"></div><a>Files</a><a>Reports</a><a>Settings</a>
+</nav></aside>
+<main class="main"><header class="top"><div><h1>오늘의 사업화 대시보드</h1><div class="sub">제안 → 회신 → 협상 → 거래 전환을 한 화면에서 관리합니다.</div></div><span class="pill">OYS IDEA GROUP · PRIVATE</span></header>
+<section class="stats">
+<div class="card stat splus"><div class="label">⭐ S+ · 즉시 사업화</div><div class="n">5</div></div>
+<div class="card stat s"><div class="label">🔴 S · 협의 진행</div><div class="n">3</div></div>
+<div class="card stat a"><div class="label">🟡 A · 구체 관심</div><div class="n">9</div></div>
+<div class="card stat b"><div class="label">🟢 B · 검토 단계</div><div class="n">4</div></div>
+<div class="card stat"><div class="label">📥 신규 회신</div><div class="n">3</div></div>
+<div class="card stat"><div class="label">⏱ 미대응 12h+</div><div class="n">2</div></div>
+</section>
+<div class="grid">
+<section class="card"><div class="section-title"><h2>우선 대응 회신</h2><span class="link">Inbox 전체보기 →</span></div>
+<div class="item"><div class="grade">⭐ S+</div><div><div class="company">DK COMPANY · CAT-TRACE</div><div class="desc">가격·MOQ·샘플·PB/OEM·시험자료·IP·로열티 요청. 시장테스트 → PB → 발주 경로 제시.</div></div><div class="due">오늘</div></div>
+<div class="item"><div class="grade">⭐ S+</div><div><div class="company">VALUE PACK / KIRAMEKI ONLINE</div><div class="desc">BSJIN Hemp Hair Repair 이미지·전성분·도매가·MOQ 요청.</div></div><div class="due">자료 준비</div></div>
+<div class="item"><div class="grade">🟡 A</div><div><div class="company">NineSigma</div><div class="desc">사용자 수동 A급. External Solution Provider / IP Sourcing / Tech Push 협업 트랙.</div></div><div class="due">수동등급 고정</div></div>
+<div class="item"><div class="grade">🟡 A</div><div><div class="company">Boon Tree Food Thailand</div><div class="desc">NOOLER FOOD 태국 현지화·RTE/OEM·R&D·FDA/Halal·패키징 검토.</div></div><div class="due">후속</div></div>
+</section>
+<section class="card"><div class="section-title"><h2>오늘 해야 할 일</h2><span class="link">Tasks →</span></div>
+<div class="todo"><strong>DK COMPANY 자료 패키지</strong><div class="steps"><span class="done">① ☑ 회신확인</span> · <span class="done">② ☑ 1차대응</span> · ③ ☐ 자료/조건 · ④ ☐ 본협의 · ⑤ ☐ 완료</div><div class="next">NEXT → 공급가 · MOQ · 샘플 · 시험자료 · IP · PB/OEM 조건</div></div>
+<div class="todo"><strong>VALUE PACK 일본 대응</strong><div class="steps"><span class="done">① ☑ 회신확인</span> · ② ☐ 1차대응 · ③ ☐ 자료/조건 · ④ ☐ 본협의 · ⑤ ☐ 완료</div><div class="next">NEXT → 제품 이미지 · 전성분 · 도매가 · MOQ</div></div>
+<div class="todo"><strong>12시간 이상 미대응 점검</strong><div class="steps">수동 등급을 보존하고 신규 회신/상태 변화만 처리</div></div>
+</section></div>
+<section><div class="section-title" style="margin-top:22px"><h2>사업화 Pipeline</h2><span class="link">Pipeline 상세 →</span></div><div class="pipeline">
+<div class="stage"><b>INTEREST</b><div class="count">9</div><small>관심 / 자료 요청</small></div>
+<div class="stage"><b>MEETING</b><div class="count">4</div><small>미팅 / 조건 확인</small></div>
+<div class="stage"><b>SAMPLE</b><div class="count">3</div><small>샘플 / 테스트</small></div>
+<div class="stage"><b>QUOTE · MOQ</b><div class="count">4</div><small>가격 / 공급조건</small></div>
+<div class="stage"><b>PILOT</b><div class="count">2</div><small>PoC / 시험판매</small></div>
+<div class="stage"><b>CONTRACT · ORDER</b><div class="count">1</div><small>계약 / 발주</small></div>
+</div></section>
+<div class="notice">MVP 화면 시안 · 현재 숫자와 거래처 내용은 UI 검토용 초기 데이터입니다. 실제 Gmail/거래처 DB 연동 전에는 운영 데이터로 사용하지 않습니다.</div>
+</main></div></body></html>
