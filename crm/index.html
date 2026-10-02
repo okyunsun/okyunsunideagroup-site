@@ -101,7 +101,15 @@
 <script>
 function filterPartners(){const q=(document.getElementById('partnerSearch')?.value||'').toLowerCase();const g=document.getElementById('gradeFilter')?.value||'';const t=document.getElementById('typeFilter')?.value||'';let n=0;document.querySelectorAll('.partner-row').forEach(r=>{const ok=(!q||(r.dataset.search||'').toLowerCase().includes(q))&&(!g||r.dataset.grade===g)&&(!t||r.dataset.type===t);r.style.display=ok?'':'none';if(ok)n++;});const e=document.getElementById('partnerEmpty');if(e)e.style.display=n?'none':'block';}
 ['partnerSearch','gradeFilter','typeFilter'].forEach(id=>document.getElementById(id)?.addEventListener(id==='partnerSearch'?'input':'change',filterPartners));
-const pipelineSteps=['Interest','Meeting','Sample','Quote/MOQ','Pilot/PoC','Contract','Order'];let pipelineIndex=3;
-document.getElementById('advancePipeline')?.addEventListener('click',()=>{pipelineIndex=Math.min(pipelineIndex+1,pipelineSteps.length-1);const stage=pipelineSteps[pipelineIndex];document.getElementById('detailStage').textContent=stage;document.getElementById('flowStatus').textContent='현재 단계: '+stage+' · 다음 행동: '+(stage==='Order'?'거래/후속관리':'다음 조건 준비');});
-document.querySelectorAll('.flow-check').forEach(c=>c.addEventListener('change',()=>{const done=[...document.querySelectorAll('.flow-check')].filter(x=>x.checked).length;document.getElementById('flowStatus').textContent='5단계 진행: '+done+'/5 · Pipeline: '+pipelineSteps[pipelineIndex];}));
+const pipelineSteps=['Interest','Meeting','Sample','Quote/MOQ','Pilot/PoC','Contract','Order'];
+const STORAGE_KEY='oys-crm-mvp-state-v1';
+let savedState={};try{savedState=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch(e){savedState={}}
+let pipelineIndex=Number.isInteger(savedState.pipelineIndex)?savedState.pipelineIndex:3;
+const flowChecks=[...document.querySelectorAll('.flow-check')];
+if(Array.isArray(savedState.flowChecks)) flowChecks.forEach((c,i)=>{if(typeof savedState.flowChecks[i]==='boolean')c.checked=savedState.flowChecks[i]});
+function persistMvp(){localStorage.setItem(STORAGE_KEY,JSON.stringify({pipelineIndex,flowChecks:flowChecks.map(c=>c.checked),savedAt:new Date().toISOString()}));}
+function renderMvp(){const stage=pipelineSteps[pipelineIndex]||pipelineSteps[0];const d=document.getElementById('detailStage');if(d)d.textContent=stage;const done=flowChecks.filter(x=>x.checked).length;const fs=document.getElementById('flowStatus');if(fs)fs.textContent='5단계 진행: '+done+'/5 · Pipeline: '+stage+' · 이 브라우저에 임시 저장';}
+renderMvp();
+document.getElementById('advancePipeline')?.addEventListener('click',()=>{pipelineIndex=Math.min(pipelineIndex+1,pipelineSteps.length-1);persistMvp();renderMvp();});
+flowChecks.forEach(c=>c.addEventListener('change',()=>{persistMvp();renderMvp();}));
 </script></main></div></body></html>
