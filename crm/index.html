@@ -85,10 +85,23 @@
 <div class="notice">이 MVP 필터는 샘플 데이터만 브라우저에서 검색합니다. 실데이터는 서버 인증·DB가 준비된 뒤 연결합니다.</div></section><section id="partners" class="card" style="margin-top:16px"><div class="section-title"><h2>Partner DB · 구조</h2><span class="link">수동 등급 우선</span></div>
 <div class="desc">회사 · 국가 · 담당자 · 이메일 · 파트너유형 · 관심아이템 · 최초제안일 · 최근회신일 · 등급 · 현재단계 · 예상Deal · 다음행동 · 다음연락일</div>
 <div class="notice">보안 원칙: 현재 Preview에는 실명 이메일·Gmail 본문·OAuth 토큰을 저장하지 않습니다. 인증이 서버 측에서 완성된 뒤 실데이터를 연결합니다.</div></section>
-<section id="deals" class="card" style="margin-top:16px"><div class="section-title"><h2>Deal Room · 준비 구조</h2><span class="link">S+ 전용</span></div>
+<section class="card" id="partner-detail" style="margin-top:16px"><div class="section-title"><h2>Partner Detail · 실행 카드</h2><span class="link">샘플 연결 구조</span></div>
+<div class="item"><div class="grade">S+</div><div><div class="company" id="detailCompany">US Retail Partner</div><div class="desc" id="detailMeta">USA · Retail · NOOLER FOOD</div></div><div class="due" id="detailStage">Quote/MOQ</div></div>
+<div class="desc" style="margin:12px 0"><b>상대 NEED</b> · 공급가격, MOQ, 샘플, 리드타임 확인 → <b>다음 행동</b> · Deal Sheet 준비</div>
+<div class="pipeline" style="grid-template-columns:repeat(5,1fr)">
+<label class="stage"><input class="flow-check" type="checkbox" checked> ① 회신 확인</label>
+<label class="stage"><input class="flow-check" type="checkbox" checked> ② 1차 대응</label>
+<label class="stage"><input class="flow-check" type="checkbox"> ③ 자료/조건</label>
+<label class="stage"><input class="flow-check" type="checkbox"> ④ 본대응·협의</label>
+<label class="stage"><input class="flow-check" type="checkbox"> ⑤ 완료/종료</label>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="advancePipeline" type="button" style="padding:10px 14px;border:0;border-radius:10px;cursor:pointer">Pipeline 다음 단계</button><span class="notice" id="flowStatus" style="margin:0">현재 단계: Quote/MOQ · 다음 행동: Deal Sheet 준비</span></div></section><section id="deals" class="card" style="margin-top:16px"><div class="section-title"><h2>Deal Room · 준비 구조</h2><span class="link">S+ 전용</span></div>
 <div class="desc">제품 · 공급가 · MOQ · 샘플 · OEM/PB · IP · Licensing · Royalty · 예상수량/매출 · NDA/계약 · 일정</div></section>
 <section id="projects" class="card" style="margin-top:16px"><div class="section-title"><h2>Projects</h2></div><div class="desc">NOOLER FOOD · SESAME · CAT-TRACE · 천일염 · Hair Repair · 기타 IP</div></section>
 <script>
 function filterPartners(){const q=(document.getElementById('partnerSearch')?.value||'').toLowerCase();const g=document.getElementById('gradeFilter')?.value||'';const t=document.getElementById('typeFilter')?.value||'';let n=0;document.querySelectorAll('.partner-row').forEach(r=>{const ok=(!q||(r.dataset.search||'').toLowerCase().includes(q))&&(!g||r.dataset.grade===g)&&(!t||r.dataset.type===t);r.style.display=ok?'':'none';if(ok)n++;});const e=document.getElementById('partnerEmpty');if(e)e.style.display=n?'none':'block';}
 ['partnerSearch','gradeFilter','typeFilter'].forEach(id=>document.getElementById(id)?.addEventListener(id==='partnerSearch'?'input':'change',filterPartners));
+const pipelineSteps=['Interest','Meeting','Sample','Quote/MOQ','Pilot/PoC','Contract','Order'];let pipelineIndex=3;
+document.getElementById('advancePipeline')?.addEventListener('click',()=>{pipelineIndex=Math.min(pipelineIndex+1,pipelineSteps.length-1);const stage=pipelineSteps[pipelineIndex];document.getElementById('detailStage').textContent=stage;document.getElementById('flowStatus').textContent='현재 단계: '+stage+' · 다음 행동: '+(stage==='Order'?'거래/후속관리':'다음 조건 준비');});
+document.querySelectorAll('.flow-check').forEach(c=>c.addEventListener('change',()=>{const done=[...document.querySelectorAll('.flow-check')].filter(x=>x.checked).length;document.getElementById('flowStatus').textContent='5단계 진행: '+done+'/5 · Pipeline: '+pipelineSteps[pipelineIndex];}));
 </script></main></div></body></html>
