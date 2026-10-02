@@ -70,10 +70,25 @@
 <div class="stage"><b>④ 본대응</b><div class="count">04</div><small>미팅 · 협상 · Pilot</small></div>
 <div class="stage"><b>⑤ 완료/종료</b><div class="count">05</div><small>발주 · 계약 · 종료</small></div>
 </div><div class="notice">AI 등급은 후보만 제안합니다. 사용자가 Gmail에서 직접 지정한 등급은 자동 변경하지 않습니다.</div></section>
-<section id="partners" class="card" style="margin-top:16px"><div class="section-title"><h2>Partner DB · 구조</h2><span class="link">수동 등급 우선</span></div>
+<section class="card" id="partner-db" style="margin-top:16px"><div class="section-title"><h2>Partner DB · 검색/필터 MVP</h2><span class="link">브라우저 임시 데이터</span></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+<input id="partnerSearch" aria-label="파트너 검색" placeholder="회사 · 국가 · 담당자 · 아이템 검색" style="flex:1;min-width:220px;padding:11px;border:1px solid #ddd;border-radius:10px">
+<select id="gradeFilter" aria-label="등급 필터" style="padding:11px;border:1px solid #ddd;border-radius:10px"><option value="">전체 등급</option><option>S+</option><option>S</option><option>A</option><option>B</option></select>
+<select id="typeFilter" aria-label="파트너 유형 필터" style="padding:11px;border:1px solid #ddd;border-radius:10px"><option value="">전체 유형</option><option>Retail</option><option>Distributor</option><option>Manufacturer/OEM</option><option>External Innovation</option></select>
+</div>
+<div id="partnerRows">
+<div class="item partner-row" data-grade="S+" data-type="Retail" data-search="US Retail Partner USA NOOLER FOOD"><div class="grade">S+</div><div><div class="company">US Retail Partner</div><div class="desc">USA · Retail · NOOLER FOOD · Quote/MOQ</div></div><div class="due">Deal</div></div>
+<div class="item partner-row" data-grade="A" data-type="Distributor" data-search="Japan Beauty Distributor Japan Hair Repair"><div class="grade">A</div><div><div class="company">Japan Beauty Distributor</div><div class="desc">Japan · Distributor · Hair Repair · 자료요청</div></div><div class="due">NEXT</div></div>
+<div class="item partner-row" data-grade="S" data-type="Manufacturer/OEM" data-search="Thailand OEM Partner Thailand NOOLER FOOD"><div class="grade">S</div><div><div class="company">Thailand OEM Partner</div><div class="desc">Thailand · Manufacturer/OEM · NOOLER FOOD · Meeting</div></div><div class="due">Meeting</div></div>
+<div class="item partner-row" data-grade="B" data-type="External Innovation" data-search="Open Innovation Partner Global IP sourcing"><div class="grade">B</div><div><div class="company">Open Innovation Partner</div><div class="desc">Global · External Innovation · IP Sourcing · 검토중</div></div><div class="due">WATCH</div></div>
+</div><div id="partnerEmpty" class="notice" style="display:none">조건에 맞는 파트너가 없습니다.</div>
+<div class="notice">이 MVP 필터는 샘플 데이터만 브라우저에서 검색합니다. 실데이터는 서버 인증·DB가 준비된 뒤 연결합니다.</div></section><section id="partners" class="card" style="margin-top:16px"><div class="section-title"><h2>Partner DB · 구조</h2><span class="link">수동 등급 우선</span></div>
 <div class="desc">회사 · 국가 · 담당자 · 이메일 · 파트너유형 · 관심아이템 · 최초제안일 · 최근회신일 · 등급 · 현재단계 · 예상Deal · 다음행동 · 다음연락일</div>
 <div class="notice">보안 원칙: 현재 Preview에는 실명 이메일·Gmail 본문·OAuth 토큰을 저장하지 않습니다. 인증이 서버 측에서 완성된 뒤 실데이터를 연결합니다.</div></section>
 <section id="deals" class="card" style="margin-top:16px"><div class="section-title"><h2>Deal Room · 준비 구조</h2><span class="link">S+ 전용</span></div>
 <div class="desc">제품 · 공급가 · MOQ · 샘플 · OEM/PB · IP · Licensing · Royalty · 예상수량/매출 · NDA/계약 · 일정</div></section>
 <section id="projects" class="card" style="margin-top:16px"><div class="section-title"><h2>Projects</h2></div><div class="desc">NOOLER FOOD · SESAME · CAT-TRACE · 천일염 · Hair Repair · 기타 IP</div></section>
-</main></div></body></html>
+<script>
+function filterPartners(){const q=(document.getElementById('partnerSearch')?.value||'').toLowerCase();const g=document.getElementById('gradeFilter')?.value||'';const t=document.getElementById('typeFilter')?.value||'';let n=0;document.querySelectorAll('.partner-row').forEach(r=>{const ok=(!q||(r.dataset.search||'').toLowerCase().includes(q))&&(!g||r.dataset.grade===g)&&(!t||r.dataset.type===t);r.style.display=ok?'':'none';if(ok)n++;});const e=document.getElementById('partnerEmpty');if(e)e.style.display=n?'none':'block';}
+['partnerSearch','gradeFilter','typeFilter'].forEach(id=>document.getElementById(id)?.addEventListener(id==='partnerSearch'?'input':'change',filterPartners));
+</script></main></div></body></html>
