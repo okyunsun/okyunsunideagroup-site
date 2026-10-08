@@ -1,0 +1,84 @@
+name: Fix shrimp major business placement
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-shrimp-major-business-placement.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Move shrimp kit into the major business section
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          s = path.read_text(encoding='utf-8')
+
+          # 1) Remove the incorrectly placed standalone shrimp section near CONTACT.
+          old_marker = '<section class="section alt" id="project-shrimp-kit">'
+          start = s.find(old_marker)
+          if start != -1:
+              end = s.find('</section>', start)
+              if end == -1:
+                  raise SystemExit('Could not find end of old shrimp section')
+              s = s[:start] + s[end + len('</section>'):]
+
+          # 2) Locate the real MAJOR BUSINESS section in the DOM (before <script>).
+          script_pos = s.find('<script>')
+          if script_pos == -1:
+              raise SystemExit('Could not find <script> anchor')
+          dom = s[:script_pos]
+          anchor = dom.find('data-i18n="ventures_intro"')
+          if anchor == -1:
+              raise SystemExit('Could not find major-business intro anchor')
+          section_end = dom.find('</section>', anchor)
+          if section_end == -1:
+              raise SystemExit('Could not find end of major-business section')
+
+          # 3) Add a visible full-width major-business card inside that section.
+          card = '''
+          <div class="wrap shrimpMajorWrap" style="margin-top:18px">
+            <div class="venture shrimpMajorCard" style="min-height:310px">
+              <div class="type">FOOD IP / HMR · MAJOR BUSINESS</div>
+              <h3>새우 소금구이 키트</h3>
+              <p>포장용기가 곧 조리용기가 되는 새우·소금·버터소스 일체형 수산물 간편조리 키트입니다. 가정·캠핑·HMR·유통 PB로 확장하며 OEM/ODM·공동사업, IP 라이선스·IP 양도·사업 양도·공동개발까지 협의 가능한 사업모델입니다.</p>
+              <div class="pillrow">
+                <span class="pill">SEAFOOD HMR</span>
+                <span class="pill">COOK-IN-PACK</span>
+                <span class="pill">CAMPING</span>
+                <span class="pill">RETAIL PB</span>
+                <span class="pill">OEM / ODM</span>
+                <span class="pill">IP LICENSE / TRANSFER</span>
+              </div>
+              <a class="linkline" href="#contact">사업화·협업 문의 ↗</a>
+            </div>
+          </div>
+          '''
+          if 'class="venture shrimpMajorCard"' not in dom:
+              s = s[:section_end] + card + s[section_end:]
+
+          path.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit homepage fix
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No homepage changes required"
+            exit 0
+          fi
+          git commit -m "Place shrimp kit in major business section"
+          git push
