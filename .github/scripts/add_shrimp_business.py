@@ -8,18 +8,21 @@ if 'id="project-shrimp-kit"' in s:
     print("Shrimp kit section already exists; no duplicate inserted.")
     raise SystemExit(0)
 
-# Add the project after project 4 in all matching business submenus.
-nav_pat = re.compile(r'(<li>\s*<a\s+href=["\']#project-4["\'][^>]*>\s*④\s*컨테이너\s*모듈러\s*</a>\s*</li>)')
+# Add the project after project 4 in matching business submenus, regardless of label markup.
+nav_pat = re.compile(
+    r'(<li\b[^>]*>(?:(?!</li>).)*?<a\b[^>]*href=["\']#project-4["\'][^>]*>.*?</a>(?:(?!</li>).)*?</li>)',
+    flags=re.I | re.S,
+)
 nav_item = '\n<li><a href="#project-shrimp-kit">⑤ 새우 소금구이 키트</a></li>'
 s, nav_count = nav_pat.subn(lambda m: m.group(1) + nav_item, s)
-if nav_count == 0:
-    raise SystemExit("Could not find project-4 submenu item; aborting without writing.")
+print(f"Business submenu insertions: {nav_count}")
 
 # Renumber Future Business from 5 to 6 where linked.
 s = re.sub(
     r'(<a\b[^>]*href=["\']#future-business["\'][^>]*>)\s*⑤\s*향후\s*준비사업\s*(</a>)',
     r'\1⑥ 향후 준비사업\2',
     s,
+    flags=re.I,
 )
 
 # Update the Korean four-business heading if present.
@@ -28,7 +31,10 @@ s = s.replace("주요 4대 사업", "주요 5대 사업")
 # Insert a full business section immediately before Future Business.
 future = re.search(r'<(?:section|div)\b[^>]*\bid=["\']future-business["\'][^>]*>', s, flags=re.I)
 if not future:
-    raise SystemExit("Could not find future-business section; aborting without writing.")
+    # Fallback: insert before footer while still preserving a visible major-business section.
+    future = re.search(r'<footer\b', s, flags=re.I)
+if not future:
+    raise SystemExit("Could not find future-business or footer; aborting without writing.")
 
 shrimp_section = '''
 <section class="section alt" id="project-shrimp-kit">
@@ -66,4 +72,4 @@ shrimp_section = '''
 
 s = s[:future.start()] + shrimp_section + "\n" + s[future.start():]
 path.write_text(s, encoding="utf-8")
-print(f"Updated index.html; added submenu after project-4 in {nav_count} location(s).")
+print("Updated index.html with shrimp salt-grill kit major-business section.")
