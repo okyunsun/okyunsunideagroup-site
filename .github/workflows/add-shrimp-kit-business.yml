@@ -6,6 +6,7 @@ name: Add shrimp salt-grill kit as major business
       - main
     paths:
       - .github/workflows/add-shrimp-kit-business.yml
+      - .github/scripts/add_shrimp_business.py
 
 permissions:
   contents: write
