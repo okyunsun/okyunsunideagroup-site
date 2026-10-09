@@ -15,7 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
-      - name: Move shrimp kit into the major business section
+      - name: Restore final shrimp kit image
+        shell: bash
+        run: |
+          mkdir -p assets
+          cat .github/shrimp-image/part-*.txt | base64 -d > assets/shrimp-salt-grill-kit-final.webp
+          echo "2df649bde4edd6bec123dd4eecea5bfa4b00c0cea7ac5db8509e491238b9aca6  assets/shrimp-salt-grill-kit-final.webp" | sha256sum -c -
+
+      - name: Add final shrimp kit image to major business card
         shell: bash
         run: |
           python - <<'PY'
@@ -24,7 +31,7 @@ jobs:
           path = Path('index.html')
           s = path.read_text(encoding='utf-8')
 
-          # 1) Remove the incorrectly placed standalone shrimp section near CONTACT.
+          # Remove a legacy standalone shrimp section if it still exists.
           old_marker = '<section class="section alt" id="project-shrimp-kit">'
           start = s.find(old_marker)
           if start != -1:
@@ -33,7 +40,7 @@ jobs:
                   raise SystemExit('Could not find end of old shrimp section')
               s = s[:start] + s[end + len('</section>'):]
 
-          # 2) Locate the real MAJOR BUSINESS section in the DOM (before <script>).
+          # Locate the MAJOR BUSINESS section.
           script_pos = s.find('<script>')
           if script_pos == -1:
               raise SystemExit('Could not find <script> anchor')
@@ -45,7 +52,7 @@ jobs:
           if section_end == -1:
               raise SystemExit('Could not find end of major-business section')
 
-          # 3) Add a visible full-width major-business card inside that section.
+          # Keep/add the shrimp kit major-business card.
           card = '''
           <div class="wrap shrimpMajorWrap" style="margin-top:18px">
             <div class="venture shrimpMajorCard" style="min-height:310px">
@@ -64,21 +71,40 @@ jobs:
             </div>
           </div>
           '''
-          if 'class="venture shrimpMajorCard"' not in dom:
+          if 'class="venture shrimpMajorCard"' not in s[:script_pos]:
               s = s[:section_end] + card + s[section_end:]
+
+          card_start = s.find('class="venture shrimpMajorCard"')
+          if card_start == -1:
+              raise SystemExit('Could not find shrimp major-business card')
+
+          # Insert the user-approved final infographic before the feature pills.
+          if 'class="shrimpMajorVisual"' not in s:
+              pill_pos = s.find('<div class="pillrow">', card_start)
+              if pill_pos == -1:
+                  raise SystemExit('Could not find shrimp card pill row')
+              visual = '''
+              <div class="shrimpMajorVisual" style="margin:18px 0 16px">
+                <a href="assets/shrimp-salt-grill-kit-final.webp" target="_blank" rel="noopener" aria-label="새우 소금구이 키트 최종 구조 이미지 크게 보기">
+                  <img src="assets/shrimp-salt-grill-kit-final.webp" alt="새우 소금구이 키트 최종 구조 인포그래픽" loading="lazy" style="display:block;width:100%;height:auto;border-radius:14px;background:#fff;border:1px solid rgba(148,163,184,.22)">
+                </a>
+              </div>
+              '''
+              s = s[:pill_pos] + visual + s[pill_pos:]
 
           path.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit homepage fix
+      - name: Commit homepage image
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
+          rm -rf .github/shrimp-image
+          git add -A index.html assets/shrimp-salt-grill-kit-final.webp .github/shrimp-image
           if git diff --cached --quiet; then
             echo "No homepage changes required"
             exit 0
           fi
-          git commit -m "Place shrimp kit in major business section"
+          git commit -m "Add final shrimp kit image to homepage"
           git push
