@@ -1,0 +1,1 @@
+window.BSZIN_ASSETS={};
