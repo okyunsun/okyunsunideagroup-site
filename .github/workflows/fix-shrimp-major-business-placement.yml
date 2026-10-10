@@ -113,7 +113,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -rf .github/shrimp-image
           rm -f assets/shrimp-salt-grill-kit-final.webp
-          git add -A index.html .github/shrimp-image assets/shrimp-salt-grill-kit-final.webp
+          git add -A
           if git diff --cached --quiet; then
             echo "No homepage changes required"
             exit 0
