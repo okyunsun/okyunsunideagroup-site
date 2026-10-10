@@ -15,108 +15,86 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
-      - name: Embed approved shrimp kit image in homepage
+      - name: Install image decoder
+        shell: bash
+        run: python -m pip install --quiet pillow
+
+      - name: Repair shrimp image into a real asset file
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
+          from PIL import Image
           import base64
-          import glob
+          import io
+          import re
 
-          parts = sorted(glob.glob('.github/shrimp-image/part-*.txt'))
-          if not parts:
-              raise SystemExit('Shrimp image chunks are missing')
-
-          b64 = ''.join(''.join(Path(p).read_text(encoding='utf-8').split()) for p in parts)
-          try:
-              raw = base64.b64decode(b64, validate=True)
-          except Exception as exc:
-              raise SystemExit(f'Invalid shrimp image base64: {exc}')
-
-          if len(raw) < 16 or raw[:4] != b'RIFF' or raw[8:12] != b'WEBP':
-              raise SystemExit('Reconstructed shrimp image is not a valid WebP container')
-
-          path = Path('index.html')
-          s = path.read_text(encoding='utf-8')
-
-          old_marker = '<section class="section alt" id="project-shrimp-kit">'
-          start = s.find(old_marker)
-          if start != -1:
-              end = s.find('</section>', start)
-              if end == -1:
-                  raise SystemExit('Could not find end of old shrimp section')
-              s = s[:start] + s[end + len('</section>'):]
-
-          script_pos = s.find('<script>')
-          if script_pos == -1:
-              raise SystemExit('Could not find <script> anchor')
-          dom = s[:script_pos]
-          anchor = dom.find('data-i18n="ventures_intro"')
-          if anchor == -1:
-              raise SystemExit('Could not find major-business intro anchor')
-          section_end = dom.find('</section>', anchor)
-          if section_end == -1:
-              raise SystemExit('Could not find end of major-business section')
-
-          card = '''
-          <div class="wrap shrimpMajorWrap" style="margin-top:18px">
-            <div class="venture shrimpMajorCard" style="min-height:310px">
-              <div class="type">FOOD IP / HMR · MAJOR BUSINESS</div>
-              <h3>새우 소금구이 키트</h3>
-              <p>포장용기가 곧 조리용기가 되는 새우·소금·버터소스 일체형 수산물 간편조리 키트입니다. 가정·캠핑·HMR·유통 PB로 확장하며 OEM/ODM·공동사업, IP 라이선스·IP 양도·사업 양도·공동개발까지 협의 가능한 사업모델입니다.</p>
-              <div class="pillrow">
-                <span class="pill">SEAFOOD HMR</span>
-                <span class="pill">COOK-IN-PACK</span>
-                <span class="pill">CAMPING</span>
-                <span class="pill">RETAIL PB</span>
-                <span class="pill">OEM / ODM</span>
-                <span class="pill">IP LICENSE / TRANSFER</span>
-              </div>
-              <a class="linkline" href="#contact">사업화·협업 문의 ↗</a>
-            </div>
-          </div>
-          '''
-          if 'class="venture shrimpMajorCard"' not in s[:script_pos]:
-              s = s[:section_end] + card + s[section_end:]
+          page = Path('index.html')
+          s = page.read_text(encoding='utf-8')
 
           card_start = s.find('class="venture shrimpMajorCard"')
           if card_start == -1:
               raise SystemExit('Could not find shrimp major-business card')
+
           pill_pos = s.find('<div class="pillrow">', card_start)
           if pill_pos == -1:
               raise SystemExit('Could not find shrimp card pill row')
 
           visual_start = s.find('<div class="shrimpMajorVisual"', card_start, pill_pos)
-          if visual_start != -1:
-              visual_end = s.find('</div>', visual_start, pill_pos)
-              if visual_end == -1:
-                  raise SystemExit('Could not find end of old shrimp visual')
-              s = s[:visual_start] + s[visual_end + len('</div>'):]
-              pill_pos = s.find('<div class="pillrow">', card_start)
+          if visual_start == -1:
+              raise SystemExit('Could not find current shrimp visual')
 
-          data_uri = 'data:image/webp;base64,' + b64
-          visual = f'''
-              <div class="shrimpMajorVisual" style="margin:18px 0 16px">
-                <img src="{data_uri}" alt="새우 소금구이 키트 최종 구조 인포그래픽" loading="lazy" style="display:block;width:100%;height:auto;border-radius:14px;background:#fff;border:1px solid rgba(148,163,184,.22)">
-              </div>
-              '''
-          s = s[:pill_pos] + visual + s[pill_pos:]
-          path.write_text(s, encoding='utf-8')
+          visual_end = s.find('</div>', visual_start, pill_pos)
+          if visual_end == -1:
+              raise SystemExit('Could not find end of current shrimp visual')
+          visual_end += len('</div>')
 
-          print(f'Embedded shrimp WebP: {len(raw)} bytes from {len(parts)} chunks')
+          visual_html = s[visual_start:visual_end]
+          m = re.search(r'src="data:image/webp;base64,([A-Za-z0-9+/=]+)"', visual_html)
+          if not m:
+              raise SystemExit('Current shrimp visual is not an inline WebP data URI')
+
+          raw = base64.b64decode(m.group(1), validate=True)
+          print(f'Inline image bytes: {len(raw)}')
+
+          try:
+              im = Image.open(io.BytesIO(raw))
+              im.load()
+          except Exception as exc:
+              raise SystemExit(f'Inline WebP cannot be decoded: {exc}')
+
+          print(f'Decoded image: format={im.format}, size={im.size}, mode={im.mode}')
+          if im.width < 500 or im.height < 300:
+              raise SystemExit(f'Unexpectedly small shrimp image: {im.size}')
+
+          out = Path('assets/shrimp-salt-grill-kit-final.webp')
+          out.parent.mkdir(parents=True, exist_ok=True)
+          clean = im.convert('RGB')
+          clean.save(out, 'WEBP', quality=92, method=6)
+
+          check = Image.open(out)
+          check.load()
+          print(f'Re-encoded asset: size={check.size}, bytes={out.stat().st_size}')
+
+          replacement = '''<div class="shrimpMajorVisual" style="margin:18px 0 16px">
+                <a href="assets/shrimp-salt-grill-kit-final.webp?v=20261010-2" target="_blank" rel="noopener" aria-label="새우 소금구이 키트 최종 구조 이미지 크게 보기">
+                  <img src="assets/shrimp-salt-grill-kit-final.webp?v=20261010-2" alt="새우 소금구이 키트 최종 구조 인포그래픽" loading="eager" decoding="async" style="display:block;width:100%;height:auto;border-radius:14px;background:#fff;border:1px solid rgba(148,163,184,.22)">
+                </a>
+              </div>'''
+
+          s = s[:visual_start] + replacement + s[visual_end:]
+          page.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit homepage image
+      - name: Commit repaired homepage asset
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -rf .github/shrimp-image
-          rm -f assets/shrimp-salt-grill-kit-final.webp
-          git add -A
+          git add index.html assets/shrimp-salt-grill-kit-final.webp
           if git diff --cached --quiet; then
             echo "No homepage changes required"
             exit 0
           fi
-          git commit -m "Embed final shrimp kit image on homepage"
+          git commit -m "Repair shrimp kit homepage image asset"
           git push
