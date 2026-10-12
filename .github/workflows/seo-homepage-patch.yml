@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch homepage metadata
+      - name: Patch homepage metadata and internal links
         shell: bash
         run: |
           python - <<'PY'
@@ -67,6 +67,23 @@ jobs:
           <script type="application/ld+json">''' + json.dumps(schema, ensure_ascii=False, separators=(',', ':')) + '''</script>'''
               s = s.replace(desc, desc + seo, 1) if desc in s else s.replace('</head>', seo + '\n</head>', 1)
 
+          if 'id="seo-discovery-links"' not in s:
+              links = '''
+          <section id="seo-discovery-links" aria-label="주요 사업화 프로젝트" style="max-width:1180px;margin:48px auto 0;padding:28px 24px 36px;border-top:1px solid rgba(127,127,127,.28);font-family:Arial,'Noto Sans KR',sans-serif;">
+            <div style="font-size:13px;letter-spacing:.08em;opacity:.68;margin-bottom:14px;">MAJOR PROJECTS · OKYUNSUN IDEA GROUP</div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px 18px;font-size:14px;line-height:1.7;">
+              <a href="/business" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">IP·BM 사업화</a>
+              <a href="/sectors" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">사업 분야</a>
+              <a href="/trust-road" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Trust Road</a>
+              <a href="/cup-ice" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">이중구조 컵얼음</a>
+              <a href="/corner-ad-banner" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">코너 광고 배너</a>
+              <a href="/shrimp-grill-kit" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">새우 소금구이 키트</a>
+              <a href="/mw-extraction" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">무가수 MW 추출</a>
+            </div>
+          </section>
+          '''
+              s = s.replace('</body>', links + '\n</body>', 1)
+
           p.write_text(s, encoding='utf-8')
           PY
 
@@ -80,5 +97,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Improve homepage SEO metadata"
+          git commit -m "Improve homepage SEO metadata and internal links"
           git push
