@@ -24,7 +24,7 @@ jobs:
           s = p.read_text(encoding='utf-8')
 
           title = '<title>옥윤선아이디어그룹 | IP·BM·제품기획 사업화 파트너</title>'
-          desc = '<meta name="description" content="옥윤선아이디어그룹(OKYUNSUN IDEA GROUP)은 제품기획, IP, 비즈니스모델(BM), 기업 협업과 라이선스·로열티 구조를 연결해 아이디어와 기술의 사업화를 추진하는 외부혁신 파트너입니다."/>'
+          desc = '<meta name="description" content="옥윤선아이디어그룹은 제품기획·IP·BM·기업협업을 연결해 아이디어와 기술의 사업화를 추진하는 외부혁신 파트너입니다."/>'
 
           s = re.sub(r'<title>.*?</title>', title, s, count=1, flags=re.I | re.S)
           s = re.sub(r'<meta\b(?=[^>]*\bname=["\']description["\'])[^>]*>', desc, s, count=1, flags=re.I | re.S)
