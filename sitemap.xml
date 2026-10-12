@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.okyunsunideagroup.com/</loc>
-    <lastmod>2026-10-12</lastmod>
-  </url>
-  <url>
-    <loc>https://www.okyunsunideagroup.com/business</loc>
-    <lastmod>2026-10-12</lastmod>
-  </url>
-  <url>
-    <loc>https://www.okyunsunideagroup.com/sectors</loc>
-    <lastmod>2026-10-12</lastmod>
-  </url>
+  <url><loc>https://www.okyunsunideagroup.com/</loc><lastmod>2026-10-12</lastmod></url>
+  <url><loc>https://www.okyunsunideagroup.com/business</loc><lastmod>2026-10-12</lastmod></url>
+  <url><loc>https://www.okyunsunideagroup.com/sectors</loc><lastmod>2026-10-12</lastmod></url>
+  <url><loc>https://www.okyunsunideagroup.com/trust-road</loc><lastmod>2026-10-12</lastmod></url>
+  <url><loc>https://www.okyunsunideagroup.com/cup-ice</loc><lastmod>2026-10-12</lastmod></url>
+  <url><loc>https://www.okyunsunideagroup.com/corner-ad-banner</loc><lastmod>2026-10-12</lastmod></url>
+  <url><loc>https://www.okyunsunideagroup.com/shrimp-grill-kit</loc><lastmod>2026-10-12</lastmod></url>
+  <url><loc>https://www.okyunsunideagroup.com/mw-extraction</loc><lastmod>2026-10-12</lastmod></url>
 </urlset>
