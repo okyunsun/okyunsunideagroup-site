@@ -18,22 +18,17 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import json
+          import json, re
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          old_title = '<title>OKYUNSUN IDEA GROUP | Specializing in global product planning, IP, BM, and content solutions.</title>'
-          new_title = '<title>옥윤선아이디어그룹 | IP·BM·제품기획 사업화 파트너</title>'
-          if old_title in s:
-              s = s.replace(old_title, new_title, 1)
+          title = '<title>옥윤선아이디어그룹 | IP·BM·제품기획 사업화 파트너</title>'
+          desc = '<meta name="description" content="옥윤선아이디어그룹(OKYUNSUN IDEA GROUP)은 제품기획, IP, 비즈니스모델(BM), 기업 협업과 라이선스·로열티 구조를 연결해 아이디어와 기술의 사업화를 추진하는 외부혁신 파트너입니다."/>'
 
-          old_desc = '<meta name="description" content="OKYUNSUN IDEA GROUP is an external innovation partner that connects product planning, IP, BM, and content into a practical commercialization structure."/>'
-          new_desc = '<meta name="description" content="옥윤선아이디어그룹(OKYUNSUN IDEA GROUP)은 제품기획, IP, 비즈니스모델(BM), 기업 협업과 라이선스·로열티 구조를 연결해 아이디어와 기술의 사업화를 추진하는 외부혁신 파트너입니다."/>'
-          if old_desc in s:
-              s = s.replace(old_desc, new_desc, 1)
+          s = re.sub(r'<title>.*?</title>', title, s, count=1, flags=re.I | re.S)
+          s = re.sub(r'<meta\b(?=[^>]*\bname=["\']description["\'])[^>]*>', desc, s, count=1, flags=re.I | re.S)
 
-          marker = new_desc
           if '<link rel="canonical" href="https://www.okyunsunideagroup.com/"' not in s:
               schema = {
                   "@context": "https://schema.org",
@@ -70,10 +65,7 @@ jobs:
           <meta name="twitter:title" content="옥윤선아이디어그룹 | IP·BM·제품기획 사업화 파트너"/>
           <meta name="twitter:description" content="IP·BM·제품기획을 기업 협업과 실제 사업화로 연결합니다."/>
           <script type="application/ld+json">''' + json.dumps(schema, ensure_ascii=False, separators=(',', ':')) + '''</script>'''
-              if marker in s:
-                  s = s.replace(marker, marker + seo, 1)
-              else:
-                  s = s.replace('</head>', seo + '\n</head>', 1)
+              s = s.replace(desc, desc + seo, 1) if desc in s else s.replace('</head>', seo + '\n</head>', 1)
 
           p.write_text(s, encoding='utf-8')
           PY
